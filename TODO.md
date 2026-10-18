@@ -3,7 +3,7 @@
 > Ajan için: bu dosyayı oku, sonra YALNIZCA aktif faz dosyasını aç. Diğer fazları okuma (token tasarrufu).
 > Bilgilendirme/analiz aracıdır; yatırım tavsiyesi değildir. Ayrıntı: `AGENTS.md`.
 
-**Aktif faz:** FAZ-02 (güncelle: bir faz kapanınca bu satırı değiştir)
+**Aktif faz:** FAZ-03 (güncelle: bir faz kapanınca bu satırı değiştir)
 
 | Faz | Dosya | Kapı (geçmeden sonrakine geçme) |
 |---|---|---|

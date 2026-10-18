@@ -12,3 +12,4 @@
 | 2026-10-18 | FAZ-01 | Kaggle Veri Kartı şartı, marka/logo kullanım kısıtı ve veri saklama koşulları netleştirildi | COMPLIANCE_TR ve DECISIONS güncellendi | KVKK veri envanteri, aydınlatma metni ve gizlilik politikası |
 | 2026-10-18 | FAZ-01 | KVKK veri envanteri, tek tıkla kalıcı silme ve işlemsel e-posta politikası netleşti | COMPLIANCE_TR ve DECISIONS güncellendi | Avukat onay süreci ve FAZ-01 kapı kontrolü |
 | 2026-10-18 | FAZ-01 | AI/LLM kuralları ve yasal kapı listesi tamamlandı; FAZ-01 kapısı kapandı | COMPLIANCE_TR onaylandı, aktif faz FAZ-02 yapıldı | FAZ-02: Antigravity kuralları, Git ve geliştirme düzeni |
+| 2026-10-18 | FAZ-02 | Git deposu (main) başlatıldı, CI secret scan iş akışı kuruldu; FAZ-02 kapısı kapandı | git init, .github/workflows/ci.yml ve ilk commit tamamlandı | FAZ-03: Sistem mimarisi, veri modelleri ve API taslağı |
