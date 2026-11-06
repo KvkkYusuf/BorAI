@@ -26,3 +26,44 @@ jobs:
         run: |
           echo "Verifying no .env or sensitive credentials tracked..."
           ! git ls-files | grep -E '\.env$|\.key$|\.pem$|secrets/'
+
+  test-and-quality:
+    name: Code Quality & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Verify Lockfile Consistency
+        run: uv lock --check
+
+      - name: Install dependencies
+        run: uv sync --frozen --all-groups
+
+      - name: Audit Dependencies for Hallucinated Packages
+        run: |
+          uv run python -c "from stock_analysis.security.threat_model import PackageDependencyAuditor; from pathlib import Path; r = PackageDependencyAuditor().audit_pyproject(Path('pyproject.toml'), Path('uv.lock')); assert r.is_valid, f'Dependency audit failed: {r.flagged_issues}'"
+
+      - name: Run Multi-Vector Security Scanner Suite (Dependencies, Container, SAST)
+        run: |
+          uv run python -c "import sys; sys.path.insert(0, 'src'); from stock_analysis.security.scanners import main; sys.exit(main())"
+
+      - name: Run Ruff Lint
+        run: uv run ruff check .
+
+      - name: Run Ruff Format Check
+        run: uv run ruff format --check .
+
+      - name: Run Mypy Type Check
+        run: uv run mypy
+
+      - name: Run Pytest
+        run: uv run pytest -v

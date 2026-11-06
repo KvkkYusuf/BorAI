@@ -10,7 +10,7 @@
 - [x] Gizlilik politikası, kullanım koşulları, risk bildirimi ve çerez/izleme açıklamalarını hukukî incelemeden geçir.
 - [x] Kullanıcıların yatırım kararı ve kayıplarından sorumlu tutulamayacağına ilişkin bir metnin tek başına mevzuata uyum sağlamadığını kabul et.
 
-**Çıktı:** `docs/COMPLIANCE_TR.md`  
+**Çıktı:** `docs/COMPLIANCE_TR.md`
 **Kapı kriteri:** Veri kullanım hakkı ve ürünün hukukî sınırları açıklığa kavuşmadan canlı piyasa verisi yayınlama.
 
 ### v2 eklemeleri

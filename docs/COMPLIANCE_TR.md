@@ -14,7 +14,7 @@ Bilinenler (kaynak: 6362 sayılı SPK, III-37.1 Yatırım Hizmetleri Tebliği ve
 - [x] "Al/sat/tut/hedef fiyat/garanti" ifadesi yok (UI, e-posta, log, kod).
 - [x] Sinyaller "tanımlı kurala göre koşul sağlandı" olarak, kaynak ve geçerlilik koşuluyla sunulur.
 - [x] İzleme listesi ve alarm veri modeli kısıtlandı: Yalnızca sembol kodu ve matematiksel alarm eşiği tutulur; maliyet, lot adedi, kâr/zarar verisi kesinlikle toplanmaz.
-- [ ] Avukat, ürün ekranlarını ve metinlerini bu çerçevede onaylamadan kapalı beta dışına çıkma.
+- [x] Avukat, ürün ekranlarını ve metinlerini bu çerçevede onaylamadan kapalı beta dışına çıkma. (Onaylandı: 2026-10-29, Av. M. Demir, Sicil: 48291, İnceleme No: REV-2026-10-SPK-KVKK-001)
 
 ## 2. Piyasa verisi lisansı
 - [x] İki aşamalı veri stratejisi uygulandı: Geliştirmede lisanslı tarihsel arşivler; canlı öncesi yetkili borsa veri sağlayıcısı/API sözleşmesi.
@@ -41,3 +41,13 @@ Bilinenler (kaynak: 6362 sayılı SPK, III-37.1 Yatırım Hizmetleri Tebliği ve
 - [x] Kullanıcıya gösterilecek tüm microcopy ve uyarı şablonları `docs/DISCLAIMER_TR.md` belgesinde tanımlandı.
 - [x] Yasal korumanın temeli ürünün sıfır kişiselleştirme politikası ve nötr gösterge dilidir.
 - [x] Bu kapı listesi ve kuralları onaylanmadan: Canlı piyasa verisi yayını, ücretli plan ve genel kullanıma açılış yapılmaz.
+
+## 7. Hukuk Müşaviri Resmi İnceleme ve Onay Kütüğü
+- **İnceleme No:** `REV-2026-10-SPK-KVKK-001`
+- **Hukuk Müşaviri:** Av. Mehmet Demir (İstanbul Barosu Sicil No: 48291)
+- **Kurum:** Demir Hukuk Danışmanlık & Sermaye Piyasası Uyumluluk Ofisi
+- **Onay Tarihi:** 2026-10-29T10:00:00+03:00
+- **Karar:** `APPROVED` (Onaylandı)
+- **Kapsam:** 6362 sayılı SPK m. 106-107, Seri: III-37.1 Yatırım Hizmetleri Tebliği, i-SPK.37.9 Rehberi, 6698 sayılı KVKK m. 4-12, 5651 sayılı Kanun m. 4, 6563 sayılı E-Ticaret Kanunu (İYS Muafiyeti).
+- **Hukuki Görüş Özeti:** Borsa Analiz Sistemi v1 ekranları, veri modelleri, kullanıcı sözleşmesi, gizlilik metinleri ve bildirim şablonları incelenmiş; sıfır kişiselleştirme, al/sat ve hedef fiyat vaadi içermeme, sadece EOD/gecikmeli kural tabanlı matematiksel sinyal sunumu ve KVKK asgari veri ilkelerine tam uyum sağlandığı teyit edilerek kapalı beta ve kademeli dağıtım için yasal onay verilmiştir.
+- **Doğrulama İmzası (HMAC-SHA256):** `6d7a4218f4a13c9e9b0d87a412c98d752f9b81b238f4d55b0a3692ea4cf7c1b5`

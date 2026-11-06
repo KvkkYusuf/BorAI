@@ -1,0 +1,175 @@
+/**
+ * Borsa Analiz Sistemi - Design Tokens & Theme Variables
+ * WCAG 2.1 AA compliant contrast ratios across dark & light themes.
+ */
+
+:root {
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 1.875rem;  /* 30px */
+
+  /* Spacing */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+
+  /* Border Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 20px -2px rgba(14, 165, 233, 0.25);
+
+  /* Responsive Breakpoints */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* Default Dark Theme (Fintech Sleek Dark) */
+:root, [data-theme="dark"] {
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-surface: #1f2937;
+  --bg-surface-elevated: #283548;
+  --bg-glass: rgba(17, 24, 39, 0.75);
+  --bg-glass-card: rgba(31, 41, 55, 0.65);
+
+  --border-subtle: #1f293d;
+  --border-focus: #0284c7;
+  --border-glass: rgba(255, 255, 255, 0.08);
+
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #0b0f19;
+
+  /* Financial Palette */
+  --color-bull: #10b981;        /* Yeşil: Yükseliş / Kazanç */
+  --color-bull-bg: rgba(16, 185, 129, 0.12);
+  --color-bear: #ef4444;        /* Kırmızı: Düşüş / Kayıp */
+  --color-bear-bg: rgba(239, 68, 68, 0.12);
+  --color-neutral: #94a3b8;     /* Nötr */
+  --color-neutral-bg: rgba(148, 163, 184, 0.12);
+
+  /* Brand Accent */
+  --color-primary: #0284c7;     /* Sky 600 */
+  --color-primary-hover: #0369a1;
+  --color-primary-glow: rgba(2, 132, 199, 0.3);
+  --color-accent: #6366f1;      /* Indigo */
+  --color-warning: #f59e0b;     /* Gecikmeli veri / Dikkat */
+  --color-warning-bg: rgba(245, 158, 11, 0.12);
+  --color-info: #38bdf8;
+  --color-info-bg: rgba(56, 189, 248, 0.12);
+}
+
+/* Light Theme (High Contrast Clean) */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-surface: #f1f5f9;
+  --bg-surface-elevated: #e2e8f0;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-card: rgba(241, 245, 249, 0.8);
+
+  --border-subtle: #e2e8f0;
+  --border-focus: #0284c7;
+  --border-glass: rgba(0, 0, 0, 0.06);
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-inverse: #ffffff;
+
+  --color-bull: #059669;
+  --color-bull-bg: rgba(5, 150, 105, 0.1);
+  --color-bear: #dc2626;
+  --color-bear-bg: rgba(220, 38, 38, 0.1);
+  --color-neutral: #64748b;
+  --color-neutral-bg: rgba(100, 116, 139, 0.1);
+
+  --color-primary: #0284c7;
+  --color-primary-hover: #0369a1;
+  --color-primary-glow: rgba(2, 132, 199, 0.2);
+  --color-accent: #4f46e5;
+  --color-warning: #d97706;
+  --color-warning-bg: rgba(217, 119, 6, 0.1);
+  --color-info: #0284c7;
+  --color-info-bg: rgba(2, 132, 199, 0.1);
+}
+
+/* High Contrast Theme (WCAG AAA - Ultra Contrast) */
+[data-contrast="high"],
+@media (prefers-contrast: more) {
+  :root, [data-theme="dark"], [data-theme="light"] {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-surface: #121212;
+    --bg-surface-elevated: #1e1e1e;
+    --bg-glass: #000000;
+    --bg-glass-card: #0a0a0a;
+
+    --border-subtle: #ffffff;
+    --border-focus: #facc15;
+    --border-glass: #ffffff;
+
+    --text-primary: #ffffff;
+    --text-secondary: #f8fafc;
+    --text-muted: #e2e8f0;
+    --text-inverse: #000000;
+
+    --color-bull: #4ade80;
+    --color-bull-bg: #052e16;
+    --color-bear: #f87171;
+    --color-bear-bg: #450a0a;
+    --color-neutral: #f8fafc;
+    --color-neutral-bg: #27272a;
+
+    --color-primary: #38bdf8;
+    --color-primary-hover: #7dd3fc;
+    --color-primary-glow: rgba(56, 189, 248, 0.6);
+    --color-accent: #a5b4fc;
+    --color-warning: #facc15;
+    --color-warning-bg: #422006;
+    --color-info: #38bdf8;
+    --color-info-bg: #082f49;
+  }
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

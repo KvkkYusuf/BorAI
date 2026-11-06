@@ -11,8 +11,28 @@ node_modules/
 dist/
 *.log
 ml/datasets/raw/
+data/raw/
+.dvc/cache/
+*.parquet
+*.feather
+*.arrow
+!*.dvc
 ml/model_registry/*.pt
 ml/model_registry/*.onnx
 .DS_Store
 .idea/
 .vscode/
+
+# SQLite & local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Caches & test artifacts
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+scratch/
+

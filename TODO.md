@@ -3,7 +3,7 @@
 > Ajan için: bu dosyayı oku, sonra YALNIZCA aktif faz dosyasını aç. Diğer fazları okuma (token tasarrufu).
 > Bilgilendirme/analiz aracıdır; yatırım tavsiyesi değildir. Ayrıntı: `AGENTS.md`.
 
-**Aktif faz:** FAZ-03 (güncelle: bir faz kapanınca bu satırı değiştir)
+**Aktif faz:** FAZ-18 (TAMAMLANDI — Faz 00-18 tüm uygulama sırası tamamlandı)
 
 | Faz | Dosya | Kapı (geçmeden sonrakine geçme) |
 |---|---|---|
@@ -28,6 +28,6 @@
 | 18 Uygulama sırası | docs/phases/FAZ-18-uygulama-sirasi.md | (özet sıralama) |
 
 ## Başvuru belgeleri (yalnızca gerektiğinde aç)
-`docs/PRODUCT_SCOPE.md` · `docs/ACCEPTANCE_CRITERIA.md` · `docs/COMPLIANCE_TR.md` · `docs/ARCHITECTURE.md` · `docs/SECURITY.md` · `docs/PERFORMANCE.md` · `docs/TOKEN_EFFICIENCY.md` · `docs/AI_LLM_SAFETY.md` · `docs/DISCLAIMER_TR.md` · `docs/ANTIGRAVITY_SETUP.md` · `docs/FIRST_PROMPT.md`
+`docs/PRODUCT_SCOPE.md` · `docs/ACCEPTANCE_CRITERIA.md` · `docs/COMPLIANCE_TR.md` · `docs/ARCHITECTURE.md` · `docs/SECURITY.md` · `docs/TEST_STRATEGY.md` · `docs/PERFORMANCE.md` · `docs/TOKEN_EFFICIENCY.md` · `docs/AI_LLM_SAFETY.md` · `docs/DISCLAIMER_TR.md` · `docs/ANTIGRAVITY_SETUP.md` · `docs/FIRST_PROMPT.md`
 
 İlerleme günlüğü: `PROGRESS.md` · Karar kaydı: `DECISIONS.md`

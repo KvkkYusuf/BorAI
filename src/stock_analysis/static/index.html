@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Borsa Analiz Sistemi - Bilgilendirme ve Teknik Analiz Platformu. Kişiye özel yatırım tavsiyesi içermez." />
+  <title>Borsa Analiz Sistemi — Pano & Analiz</title>
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/layout.css" />
+  <link rel="stylesheet" href="/static/css/components.css" />
+</head>
+<body>
+  <!-- Accessibility: Skip to Content -->
+  <a href="#main-content" class="skip-link">Ana İçeriğe Atla</a>
+
+  <!-- Accessibility: Screen Reader Live Region for Dynamic Announcements -->
+  <div id="a11y-announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="app-shell">
+    <!-- Desktop & Mobile Drawer Sidebar -->
+    <aside id="app-sidebar" class="app-sidebar" aria-label="Ana Menü">
+      <div class="sidebar-header">
+        <a href="#" class="brand-logo" onclick="window.BoraApp.navigateTo('dashboard'); return false;">
+          <div class="brand-icon">B</div>
+          <span>Borsa Analiz</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-screen="dashboard" aria-current="page">
+          <span class="nav-icon">📊</span>
+          <span>Pano</span>
+        </button>
+        <button class="nav-item" data-screen="screener">
+          <span class="nav-icon">🔍</span>
+          <span>Hisse Keşfet</span>
+        </button>
+        <button class="nav-item" data-screen="detail">
+          <span class="nav-icon">📈</span>
+          <span>Hisse Detay</span>
+        </button>
+        <button class="nav-item" data-screen="analysis">
+          <span class="nav-icon">🧠</span>
+          <span>Analiz & Model</span>
+        </button>
+        <button class="nav-item" data-screen="alerts">
+          <span class="nav-icon">🔔</span>
+          <span>Uyarılar</span>
+        </button>
+        <button class="nav-item" data-screen="watchlists">
+          <span class="nav-icon">⭐</span>
+          <span>İzleme Listeleri</span>
+        </button>
+        <button class="nav-item" data-screen="settings">
+          <span class="nav-icon">⚙️</span>
+          <span>Ayarlar</span>
+        </button>
+        <button class="nav-item" data-screen="legal">
+          <span class="nav-icon">⚖️</span>
+          <span>Yasal & Şeffaflık</span>
+        </button>
+        <button class="nav-item" data-screen="admin">
+          <span class="nav-icon">🛡️</span>
+          <span>Yönetim Paneli</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div style="font-size: var(--text-xs); color: var(--text-muted); display: flex; align-items: center; justify-content: space-between;">
+          <span>Veri Durumu</span>
+          <span id="sidebar-latency-badge" class="badge badge-warning"><span class="pulse-dot delayed"></span> <span id="sidebar-latency-status">15 Dk Gecikmeli</span></span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+          Gecikme: <strong id="sidebar-latency-desc">15 Dk (Mevzuat)</strong> | <span id="sidebar-latency-time">17:55 UTC+3</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Drawer Backdrop -->
+    <div id="drawer-backdrop" class="drawer-backdrop" aria-hidden="true"></div>
+
+    <!-- Main Content Container -->
+    <div class="app-main">
+      <!-- Sticky Top Header -->
+      <header class="app-header">
+        <div class="header-left">
+          <button id="btn-mobile-menu" class="btn-mobile-menu" aria-label="Menüyü aç" aria-expanded="false" aria-controls="app-sidebar" aria-haspopup="true">
+            ☰
+          </button>
+          <div class="search-bar-wrap">
+            <span class="search-icon-pos">🔍</span>
+            <input
+              type="text"
+              id="top-search-input"
+              class="search-input"
+              placeholder="Hisse sembolü veya şirket ara (Örn: THYAO, ASELS, GARAN)..."
+              aria-label="Hisse arama"
+            />
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button id="btn-header-latency" class="btn btn-secondary btn-sm header-latency-pill" onclick="window.BoraApp.toggleDataLatencyMode()" aria-label="Veri gecikme durumunu değiştir" title="Veri Gecikme Durumu (Tıklayarak modu değiştirin)">
+            <span id="header-latency-dot" class="pulse-dot delayed"></span>
+            <span id="header-latency-label">15 Dk Gecikmeli BIST</span>
+          </button>
+          <button id="btn-contrast-toggle" class="btn btn-secondary btn-sm" onclick="window.BoraApp.toggleContrastMode()" aria-label="Yüksek kontrast modunu aç veya kapat" aria-pressed="false" title="Yüksek Kontrast Modu (WCAG AAA)">
+            👁️ Yüksek Kontrast
+          </button>
+          <button id="btn-theme-toggle" class="btn btn-secondary btn-sm" aria-label="Temayı değiştir">
+            ☀️ Açık Tema
+          </button>
+          <div style="display: flex; align-items: center; gap: var(--space-2);">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--bg-surface-elevated); display: flex; align-items: center; justify-content: center; font-size: var(--text-xs); font-weight: 700;" aria-label="Kullanıcı profili TR">
+              TR
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Body Viewport -->
+      <main id="main-content" class="page-container" tabindex="-1">
+
+        <!-- Mandatory Legal Disclaimer Banner -->
+        <div class="disclaimer-banner" role="alert">
+          <span style="font-size: var(--text-lg); line-height: 1;">⚠️</span>
+          <div>
+            <strong>YASAL UYARI:</strong> Burada yer alan yatırım bilgi, yorum ve tavsiyeleri yatırım danışmanlığı kapsamında değildir.
+            Kişiye özel sermaye piyasası faaliyeti veya al/sat tavsiyesi içermez; sadece bilgilendirme ve teknik gösterge amaçlıdır.
+          </div>
+        </div>
+
+        <!-- Primary Actions Bar: Ara, İzle, Grafik Aç, Uyarı Kur -->
+        <div class="quick-actions-bar" role="toolbar" aria-label="Temel Finansal Eylemler">
+          <span class="quick-actions-title">⚡ Hızlı Eylemler:</span>
+          
+          <button id="btn-action-search" class="quick-action-btn" onclick="window.BoraApp.triggerAction('search')" aria-keyshortcuts="Alt+S" aria-label="Hisse Ara">
+            <span>🔍 Ara</span>
+            <kbd class="badge-shortcut">Alt+S</kbd>
+          </button>
+          
+          <button id="btn-action-watch" class="quick-action-btn" onclick="window.BoraApp.triggerAction('watch')" aria-keyshortcuts="Alt+W" aria-label="İzleme Listesine Ekle veya Çıkar">
+            <span id="btn-action-watch-label">⭐ İzle (THYAO)</span>
+            <kbd class="badge-shortcut">Alt+W</kbd>
+          </button>
+          
+          <button id="btn-action-chart" class="quick-action-btn" onclick="window.BoraApp.triggerAction('chart')" aria-keyshortcuts="Alt+G" aria-label="İnteraktif Grafiği Aç">
+            <span>📈 Grafik Aç</span>
+            <kbd class="badge-shortcut">Alt+G</kbd>
+          </button>
+          
+          <button id="btn-action-alert" class="quick-action-btn" onclick="window.BoraApp.triggerAction('alert')" aria-keyshortcuts="Alt+A" aria-label="Fiyat Uyarısı Kur">
+            <span>🔔 Uyarı Kur</span>
+            <kbd class="badge-shortcut">Alt+A</kbd>
+          </button>
+        </div>
+
+        <!-- UX Onboarding & Usability Test Checklist Widget (FAZ-08) -->
+        <div id="ux-tasks-widget" class="ux-tasks-widget" role="region" aria-label="Kullanıcı Testi ve Başlangıç Görevleri">
+          <div class="ux-widget-header">
+            <div class="ux-widget-title-wrap">
+              <span class="ux-widget-badge">🎯 Yeni Kullanıcı Testi</span>
+              <strong id="ux-widget-title">4 Temel Görev (Hedef: 60 Saniyede Yardımsız Analiz)</strong>
+            </div>
+            <div class="ux-widget-actions">
+              <span id="ux-widget-score" class="badge badge-info">İlerleme: 0/4 (%0)</span>
+              <button id="btn-ux-run-benchmark" class="btn btn-secondary btn-sm" onclick="window.BoraApp.runAutomatedUXSession()" aria-label="Otomatik UX Test Senaryosunu Koştur" title="Kullanıcı Test Simülasyonu">
+                ⚡ Otomatik Test
+              </button>
+              <button id="btn-ux-reset" class="btn btn-ghost btn-sm" onclick="window.BoraApp.resetUXTasks()" aria-label="Görevleri Sıfırla" title="Sıfırla">
+                ↺
+              </button>
+              <button id="btn-ux-toggle" class="btn btn-ghost btn-sm" onclick="window.BoraApp.toggleUXWidget()" aria-label="Görevi Gizle/Göster" aria-expanded="true">
+                ▲
+              </button>
+            </div>
+          </div>
+          
+          <div id="ux-widget-body" class="ux-widget-body">
+            <!-- Progress Bar -->
+            <div class="ux-progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="ux-progressbar">
+              <div id="ux-progress-fill" class="ux-progress-fill" style="width: 0%;"></div>
+            </div>
+
+            <!-- Task Items List -->
+            <ul class="ux-task-list" id="ux-task-list">
+              <li id="ux-task-search" class="ux-task-item" data-task-id="search">
+                <span class="ux-task-icon">🔍</span>
+                <div class="ux-task-info">
+                  <span class="ux-task-name">1. Hisse Ara</span>
+                  <span class="ux-task-desc">Arama çubuğunu kullan veya <kbd>Alt+S</kbd> tuşla</span>
+                </div>
+                <span id="ux-task-search-status" class="badge badge-warning">Bekliyor (&lt; 15s)</span>
+              </li>
+
+              <li id="ux-task-watch" class="ux-task-item" data-task-id="watch">
+                <span class="ux-task-icon">⭐</span>
+                <div class="ux-task-info">
+                  <span class="ux-task-name">2. İzleme Listesine Ekle</span>
+                  <span class="ux-task-desc">Hisse için ⭐ İzle butonuna bas veya <kbd>Alt+W</kbd></span>
+                </div>
+                <span id="ux-task-watch-status" class="badge badge-warning">Bekliyor (&lt; 10s)</span>
+              </li>
+
+              <li id="ux-task-chart" class="ux-task-item" data-task-id="chart">
+                <span class="ux-task-icon">📈</span>
+                <div class="ux-task-info">
+                  <span class="ux-task-name">3. Fiyat Grafiğini İncele</span>
+                  <span class="ux-task-desc">Detay grafiğini aç veya <kbd>Alt+G</kbd> ile dönemi seç</span>
+                </div>
+                <span id="ux-task-chart-status" class="badge badge-warning">Bekliyor (&lt; 20s)</span>
+              </li>
+
+              <li id="ux-task-alert" class="ux-task-item" data-task-id="alert">
+                <span class="ux-task-icon">🔔</span>
+                <div class="ux-task-info">
+                  <span class="ux-task-name">4. Fiyat Uyarısı Kur</span>
+                  <span class="ux-task-desc">Alarm oluştur veya <kbd>Alt+A</kbd> ile hedef fiyat belirle</span>
+                </div>
+                <span id="ux-task-alert-status" class="badge badge-warning">Bekliyor (&lt; 25s)</span>
+              </li>
+            </ul>
+
+            <div id="ux-benchmark-summary" class="ux-benchmark-summary" style="display: none;">
+              <span id="ux-summary-text">✓ Tüm görevler yardımsız tamamlandı! Toplam süre: 23.4s | SUS: 89.5</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 1: PANO (DASHBOARD) -->
+        <section id="screen-dashboard" class="app-screen active" aria-labelledby="heading-dashboard">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-dashboard" class="card-title" style="font-size: var(--text-2xl);">Piyasa Genel Bakış</h1>
+              <p class="card-subtitle">Borsa İstanbul endeksleri, veri durumu ve hızlı izleme panosu</p>
+            </div>
+            <div style="display: flex; gap: var(--space-2);">
+              <span class="badge badge-info">BIST 100</span>
+              <span class="badge badge-bull">Piyasa Açık</span>
+            </div>
+          </div>
+
+          <!-- Market Indices Ticker Grid -->
+          <div class="grid-cols-4">
+            <div class="ticker-card">
+              <span class="ticker-name">BIST 100 (XU100)</span>
+              <span class="ticker-value">9.845,20</span>
+              <span class="ticker-change" style="color: var(--color-bull);" aria-label="Artış: +1,42%"><span aria-hidden="true">▲</span> +1,42% (+137,80) <span class="trend-text">Artış</span></span>
+            </div>
+            <div class="ticker-card">
+              <span class="ticker-name">BIST 30 (XU030)</span>
+              <span class="ticker-value">10.720,15</span>
+              <span class="ticker-change" style="color: var(--color-bull);" aria-label="Artış: +1,65%"><span aria-hidden="true">▲</span> +1,65% (+174,10) <span class="trend-text">Artış</span></span>
+            </div>
+            <div class="ticker-card">
+              <span class="ticker-name">BIST BANKA (XBANK)</span>
+              <span class="ticker-value">14.150,80</span>
+              <span class="ticker-change" style="color: var(--color-bear);" aria-label="Azalış: -0,48%"><span aria-hidden="true">▼</span> -0,48% (-68,40) <span class="trend-text">Azalış</span></span>
+            </div>
+            <div class="ticker-card">
+              <span class="ticker-name">BIST SINAİ (XUSIN)</span>
+              <span class="ticker-value">13.290,45</span>
+              <span class="ticker-change" style="color: var(--color-bull);" aria-label="Artış: +2,10%"><span aria-hidden="true">▲</span> +2,10% (+273,20) <span class="trend-text">Artış</span></span>
+            </div>
+          </div>
+
+          <!-- Dashboard Row: Watchlist & Quick Alerts -->
+          <div class="grid-cols-2">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">⭐ Öne Çıkan Hisseler</h2>
+                <button class="btn btn-ghost btn-sm" onclick="window.BoraApp.navigateTo('screener')">Tümünü Keşfet →</button>
+              </div>
+              <div class="table-responsive table-cards-mobile">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Sembol</th>
+                      <th scope="col">Son Fiyat</th>
+                      <th scope="col">Fark %</th>
+                      <th scope="col">Hacim</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="stock-row" tabindex="0" role="button" aria-label="THYAO Türk Hava Yolları hisse detayını görüntüle" onclick="window.BoraApp.selectStock('THYAO')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); window.BoraApp.selectStock('THYAO');}">
+                      <td data-label="Sembol"><strong>THYAO</strong></td>
+                      <td data-label="Son Fiyat">312,50 ₺</td>
+                      <td data-label="Fark %"><span class="badge badge-bull" aria-label="Artış: +2,46%"><span aria-hidden="true">▲</span> +2,46% <span class="trend-text">Artış</span></span></td>
+                      <td data-label="Hacim">1,42 Mr ₺</td>
+                    </tr>
+                    <tr class="stock-row" tabindex="0" role="button" aria-label="ASELS Aselsan hisse detayını görüntüle" onclick="window.BoraApp.selectStock('ASELS')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); window.BoraApp.selectStock('ASELS');}">
+                      <td data-label="Sembol"><strong>ASELS</strong></td>
+                      <td data-label="Son Fiyat">64,80 ₺</td>
+                      <td data-label="Fark %"><span class="badge badge-bull" aria-label="Artış: +1,25%"><span aria-hidden="true">▲</span> +1,25% <span class="trend-text">Artış</span></span></td>
+                      <td data-label="Hacim">980 Mn ₺</td>
+                    </tr>
+                    <tr class="stock-row" tabindex="0" role="button" aria-label="GARAN Garanti BBVA hisse detayını görüntüle" onclick="window.BoraApp.selectStock('GARAN')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); window.BoraApp.selectStock('GARAN');}">
+                      <td data-label="Sembol"><strong>GARAN</strong></td>
+                      <td data-label="Son Fiyat">118,20 ₺</td>
+                      <td data-label="Fark %"><span class="badge badge-bear" aria-label="Azalış: -0,67%"><span aria-hidden="true">▼</span> -0,67% <span class="trend-text">Azalış</span></span></td>
+                      <td data-label="Hacim">2,10 Mr ₺</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">🔔 Son Fiyat Uyarıları</h2>
+                <button class="btn btn-ghost btn-sm" onclick="window.BoraApp.navigateTo('alerts')">Uyarı Yönetimi →</button>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="padding: var(--space-3); background: var(--bg-surface); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong>THYAO</strong> <span class="badge badge-bull">Tetiklendi</span>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">Hedef: >= 310,00 ₺ (Gerçekleşen: 312,50 ₺)</div>
+                  </div>
+                  <span style="font-size: var(--text-xs); color: var(--text-muted);">14:32</span>
+                </div>
+                <div style="padding: var(--space-3); background: var(--bg-surface); border-radius: var(--radius-md); display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong>ASELS</strong> <span class="badge badge-info">Beklemede</span>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">RSI &gt; 70 (Mevcut RSI: 58,1)</div>
+                  </div>
+                  <span style="font-size: var(--text-xs); color: var(--text-muted);">Aktif</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 2: HISSE KESFET (SCREENER) -->
+        <section id="screen-screener" class="app-screen" aria-labelledby="heading-screener">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-screener" class="card-title" style="font-size: var(--text-2xl);">Hisse Keşfet & Filtrele</h1>
+              <p class="card-subtitle">Sembol, sektör, likidite ve teknik göstergelere göre Borsa İstanbul şirketleri</p>
+            </div>
+          </div>
+
+          <!-- Screener Filters Bar -->
+          <div class="card">
+            <div class="grid-cols-4">
+              <div class="form-group">
+                <label for="screener-search-input" class="form-label">Sembol veya Şirket</label>
+                <input type="text" id="screener-search-input" class="form-input" placeholder="Örn: THYAO, ASELS..." />
+              </div>
+              <div class="form-group">
+                <label for="filter-sector" class="form-label">Sektör</label>
+                <select id="filter-sector" class="form-select">
+                  <option value="">Tüm Sektörler</option>
+                  <option value="Ulaştırma">Ulaştırma</option>
+                  <option value="Teknoloji">Savunma / Teknoloji</option>
+                  <option value="Bankacılık">Bankacılık</option>
+                  <option value="Demir Çelik">Demir Çelik</option>
+                  <option value="Holding">Holding</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="filter-liquidity" class="form-label">Likidite / Pazar</label>
+                <select id="filter-liquidity" class="form-select">
+                  <option value="all">BIST Yıldız Pazar (Yüksek Likidite)</option>
+                  <option value="ana">BIST Ana Pazar</option>
+                </select>
+              </div>
+              <div class="form-group" style="justify-content: flex-end;">
+                <button class="btn btn-primary" onclick="window.BoraApp.showToast('Filtreler güncellendi.')">Filtreleri Uygula</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Results Table -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+              <div class="table-scroll-hint"><span aria-hidden="true">💡</span> Telefon ekranında kart veya kaydırılabilir tablo modunu kullanabilirsiniz.</div>
+              <button id="btn-toggle-table-view-screener" class="btn-table-view-toggle" onclick="window.BoraApp.toggleMobileTableView()" aria-label="Mobil tablo görünümünü değiştir (Kartlar veya Yatay Kaydırma)" title="Mobil Görünüm Modu">
+                <span id="btn-toggle-table-view-icon-screener" aria-hidden="true">📱</span>
+                <span id="btn-toggle-table-view-text-screener">Kart Görünümü Aktif</span>
+              </button>
+            </div>
+            <div id="screener-table-container" class="table-responsive table-cards-mobile">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Sembol</th>
+                    <th scope="col">Şirket Adı</th>
+                    <th scope="col">Sektör</th>
+                    <th scope="col">Fiyat</th>
+                    <th scope="col">Günlük Fark</th>
+                    <th scope="col">Hacim</th>
+                    <th scope="col">Trend Durumu</th>
+                    <th scope="col" style="text-align: right;">Hızlı Eylemler</th>
+                  </tr>
+                </thead>
+                <tbody id="screener-table-body">
+                  <!-- Filled dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 3: HISSE DETAY (STOCK DETAIL) -->
+        <section id="screen-detail" class="app-screen" aria-labelledby="heading-detail">
+          <div class="card" style="padding: var(--space-6);">
+            <div class="card-header" style="flex-wrap: wrap; gap: var(--space-4);">
+              <div style="display: flex; align-items: center; gap: var(--space-4);">
+                <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: var(--bg-surface-elevated); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: var(--text-lg); color: var(--color-primary);">
+                  ₺
+                </div>
+                <div>
+                  <div style="display: flex; align-items: center; gap: var(--space-2);">
+                    <h1 id="detail-symbol" style="font-size: var(--text-3xl); font-weight: 800;">THYAO</h1>
+                    <span class="badge badge-info">BIST 100</span>
+                    <span id="detail-latency-badge" class="badge badge-warning" role="status" aria-label="Veri gecikme durumu">
+                      <span class="pulse-dot delayed" aria-hidden="true"></span>
+                      <span id="detail-latency-text">15 Dk Gecikmeli</span>
+                    </span>
+                  </div>
+                  <div id="detail-name" style="color: var(--text-muted); font-size: var(--text-sm);">Türk Hava Yolları A.O.</div>
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: baseline; gap: var(--space-4);">
+                <div id="detail-price" style="font-size: var(--text-3xl); font-family: var(--font-mono); font-weight: 700;">
+                  312,50 ₺
+                </div>
+                <div id="detail-change" class="badge badge-bull" style="font-size: var(--text-sm);" aria-label="Artış: +2,46%">
+                  <span aria-hidden="true">▲</span> +2,46% <span class="trend-text">Artış</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stale / Delayed Data Warning Banner (Açık Uyarı: Eski fiyatı güncelmiş gibi sunmama) -->
+            <div id="detail-stale-banner" class="stale-data-alert stale-mode-delayed" role="alert" aria-live="polite">
+              <div class="stale-banner-icon" aria-hidden="true">⚠️</div>
+              <div class="stale-banner-content">
+                <div class="stale-banner-header">
+                  <strong id="stale-banner-title">DİKKAT: Veri 15 Dakika Gecikmelidir</strong>
+                  <span class="stale-banner-timestamp">Son Veri: <time id="detail-last-update">23.10.2026 17:55:00</time> (BIST Seans Verisi)</span>
+                </div>
+                <p id="stale-banner-desc" class="stale-banner-desc">
+                  Bu ekranda görüntülenen fiyat ve derinlik verileri Borsa İstanbul mevzuatı gereği <strong>en az 15 dakika gecikmelidir</strong>.
+                  Eski veya gecikmeli fiyatlar anlık piyasa fiyatı yerine geçmez; anlık işlem emri için kullanılamaz.
+                </p>
+              </div>
+              <div class="stale-banner-actions">
+                <button type="button" class="btn btn-secondary btn-xs" onclick="window.BoraApp.toggleDataLatencyMode()" title="Gecikme modunu test et (Canlı / 15dk Gecikmeli / Bayat)">Mod Değiştir (Test)</button>
+              </div>
+            </div>
+
+            <!-- Timeframe & Chart Toolbar with Clear Primary Actions -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); border-top: 1px solid var(--border-subtle); padding-top: var(--space-4);">
+              <div class="timeframe-group" role="group" aria-label="Zaman Aralığı">
+                <button class="timeframe-btn" data-timeframe="1G">1G</button>
+                <button class="timeframe-btn" data-timeframe="1H">1H</button>
+                <button class="timeframe-btn active" data-timeframe="1A">1A</button>
+                <button class="timeframe-btn" data-timeframe="3A">3A</button>
+                <button class="timeframe-btn" data-timeframe="1Y">1Y</button>
+                <button class="timeframe-btn" data-timeframe="ALL">Tümü</button>
+              </div>
+
+              <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+                <button id="btn-detail-watch" class="btn btn-secondary btn-sm" onclick="window.BoraApp.triggerAction('watch')" aria-label="İzleme Listesi Durumu">⭐ İzle</button>
+                <button id="btn-detail-chart" class="btn btn-secondary btn-sm" onclick="window.BoraApp.triggerAction('chart')" aria-label="Grafiği Odakla">📈 Grafik Odakla</button>
+                <button id="btn-detail-alert" class="btn btn-primary btn-sm" onclick="window.BoraApp.triggerAction('alert')" aria-label="Fiyat Uyarısı Kur">🔔 Fiyat Uyarısı Kur</button>
+                <button class="btn btn-ghost btn-sm" onclick="window.BoraApp.navigateTo('analysis')" aria-label="Derin Analiz ve Model">🧠 Derin Analiz</button>
+              </div>
+            </div>
+
+            <!-- Chart Interactive Controls Bar: Zoom, Gap Toggle, Volume Toggle, Indicators -->
+            <div class="chart-controls-bar" role="toolbar" aria-label="Grafik Yakınlaştırma ve Katman Kontrolleri">
+              <div style="display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap;">
+                <div class="chart-zoom-group" role="group" aria-label="Grafik Yakınlaştırma">
+                  <button id="btn-chart-zoom-in" class="chart-zoom-btn" onclick="window.BoraApp.zoomChart(0.25)" aria-label="Grafiği Yakınlaştır">🔍+ Yakınlaştır</button>
+                  <button id="btn-chart-zoom-out" class="chart-zoom-btn" onclick="window.BoraApp.zoomChart(-0.25)" aria-label="Grafiği Uzaklaştır">🔍- Uzaklaştır</button>
+                  <button id="btn-chart-zoom-reset" class="chart-zoom-btn" onclick="window.BoraApp.resetZoom()" aria-label="Yakınlaştırmayı Sıfırla">↺ Sıfırla</button>
+                  <span id="chart-zoom-level" class="chart-zoom-level" aria-live="polite">Zoom: %100</span>
+                </div>
+
+                <button id="btn-chart-gap-toggle" class="chart-toggle-btn active" onclick="window.BoraApp.toggleDataGaps()" aria-label="Veri Boşlukları Gösterimi">
+                  📅 Veri Boşlukları (Açık)
+                </button>
+                <button id="btn-chart-vol-toggle" class="chart-toggle-btn active" onclick="window.BoraApp.toggleVolume()" aria-label="Hacim Paneli">
+                  📊 Hacim Paneli
+                </button>
+                <button id="btn-chart-sma-toggle" class="chart-toggle-btn active" onclick="window.BoraApp.toggleSMA()" aria-label="SMA 20 Göstergesi">
+                  📈 SMA(20)
+                </button>
+              </div>
+
+              <div id="chart-data-gap-indicator" class="chart-data-gap-badge" title="Piyasa tatili veya veri kesintisi olan seanslar grafikte özel olarak taranarak gösterilmiştir.">
+                <span aria-hidden="true">⚠️</span> <span>Resmi Tatil / Veri Boşluğu Gösterimi Aktif</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Cursor Info HUD Strip (Crosshair Hover Values) -->
+            <div id="chart-cursor-hud" class="chart-hud" role="region" aria-label="İmleç Detay Bilgisi" aria-live="polite">
+              <span class="chart-hud-item"><span>Tarih:</span> <strong id="hud-date">23.10.2026</strong></span>
+              <span class="chart-hud-item"><span>Açılış:</span> <strong id="hud-open">310,20 ₺</strong></span>
+              <span class="chart-hud-item"><span>Yüksek:</span> <strong id="hud-high">314,80 ₺</strong></span>
+              <span class="chart-hud-item"><span>Düşük:</span> <strong id="hud-low">306,20 ₺</strong></span>
+              <span class="chart-hud-item"><span>Kapanış:</span> <strong id="hud-close">312,50 ₺</strong></span>
+              <span class="chart-hud-item"><span>Hacim:</span> <strong id="hud-volume">1,42M Lot</strong></span>
+              <span class="chart-hud-item"><span>Değişim:</span> <strong id="hud-change" class="trend-text badge badge-bull" style="display:inline-flex; align-items:center; gap:2px;"><span aria-hidden="true">▲</span> +2,46% Artış</strong></span>
+              <span id="hud-gap-notice" class="badge badge-warning" style="display: none;">
+                ⚠️ Seans Dışı / BİST Resmi Tatili (Veri Akışı Yok)
+              </span>
+            </div>
+
+            <!-- SVG Candlestick & Volume Chart with Loading Skeleton and Error/Retry States -->
+            <div id="chart-svg-container" style="margin-top: var(--space-3); background: var(--bg-surface); border-radius: var(--radius-md); padding: var(--space-4); min-height: 340px; position: relative;">
+              <!-- Initial Loading Skeleton & Overlay -->
+              <div id="chart-loading-state" class="loading-overlay" style="display: none;">
+                <span class="loading-spinner loading-spinner-lg" aria-hidden="true"></span>
+                <span style="font-weight: 600; color: var(--text-primary);">Piyasa verileri yükleniyor...</span>
+                <span style="font-size: var(--text-xs); color: var(--text-muted);">Borsa İstanbul seans sunucusuna bağlanılıyor</span>
+              </div>
+
+              <!-- Chart Error & Retry State Container -->
+              <div id="chart-error-state" class="error-state" style="display: none;">
+                <div class="error-state-icon" aria-hidden="true">⚠️</div>
+                <h3 class="error-state-title">Piyasa Verisi Alınamadı</h3>
+                <p class="error-state-desc">
+                  BIST veri sağlayıcısı ile bağlantı kurulamadı veya sunucu yanıt vermedi (Zaman aşımı / 504 Gateway Timeout).
+                </p>
+                <div>
+                  <button id="btn-chart-retry" class="btn-retry" onclick="window.BoraApp.retryChartData()">
+                    <span class="loading-spinner" id="chart-retry-spinner" style="display: none; width: 16px; height: 16px; border-width: 2px;"></span>
+                    <span id="chart-retry-label">↺ Tekrar Dene</span>
+                  </button>
+                  <div class="retry-countdown-notice">Otomatik yeniden bağlanma: 30 saniye sonra</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stock Metrics Grid -->
+            <div class="grid-cols-4" style="margin-top: var(--space-4);">
+              <div class="ticker-card">
+                <span class="ticker-name">Günün En Yüksek</span>
+                <span class="ticker-value">314,80 ₺</span>
+              </div>
+              <div class="ticker-card">
+                <span class="ticker-name">Günün En Düşük</span>
+                <span class="ticker-value">306,20 ₺</span>
+              </div>
+              <div class="ticker-card">
+                <span class="ticker-name">20 Günlük SMA</span>
+                <span class="ticker-value">308,40 ₺</span>
+              </div>
+              <div class="ticker-card">
+                <span class="ticker-name">RSI (14)</span>
+                <span class="ticker-value">62,40</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 4: ANALIZ (ANALYSIS & MODEL) -->
+        <section id="screen-analysis" class="app-screen" aria-labelledby="heading-analysis">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-analysis" class="card-title" style="font-size: var(--text-2xl);">Teknik Analiz & Tahmin Modeli</h1>
+              <p class="card-subtitle">İstatistiki göstergeler, model tahmin aralığı, belirsizlik payı ve geçmiş performans</p>
+            </div>
+          </div>
+
+          <div class="grid-cols-2">
+            <!-- Model Prediction Range (Without target price promise) -->
+            <div id="prediction-main-card" class="card prediction-card">
+              <div class="card-header">
+                <div>
+                  <h2 class="card-title">🤖 Model Tahmin Aralığı & Belirsizlik Payı</h2>
+                  <p class="card-subtitle">Kesin hedef fiyat yerine istatistiki güven aralığı ve hata payı</p>
+                </div>
+                <div style="display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap;">
+                  <span id="prediction-model-version-badge" class="model-badge-horizon">Model v1.4.2</span>
+                  <span id="prediction-status-badge" class="badge badge-bear" aria-label="Model Durumu: Tahmin Kapalı">Tahmin Kapalı (Baseline Altı / Bayrak Kapalı)</span>
+                </div>
+              </div>
+
+              <!-- Horizon Selection (1D, 3D, 5D, 10D) -->
+              <div class="prediction-horizon-nav" role="radiogroup" aria-label="Tahmin Ufku Seçimi">
+                <span class="prediction-horizon-label">Tahmin Ufku:</span>
+                <div class="button-group" role="group">
+                  <button type="button" class="horizon-btn" data-horizon="1D" aria-checked="false" onclick="window.BoraApp.setPredictionHorizon('1D')">1 Gün (24s)</button>
+                  <button type="button" class="horizon-btn" data-horizon="3D" aria-checked="false" onclick="window.BoraApp.setPredictionHorizon('3D')">3 Gün (72s)</button>
+                  <button type="button" class="horizon-btn active" data-horizon="5D" aria-checked="true" onclick="window.BoraApp.setPredictionHorizon('5D')">5 Gün (120s)</button>
+                  <button type="button" class="horizon-btn" data-horizon="10D" aria-checked="false" onclick="window.BoraApp.setPredictionHorizon('10D')">10 Gün (240s)</button>
+                </div>
+              </div>
+
+              <!-- Active Prediction Content -->
+              <div id="prediction-active-content" style="display: none; flex-direction: column; gap: var(--space-3);">
+                <!-- Confidence Band Display -->
+                <div class="prediction-band-box">
+                  <div class="prediction-band-header">
+                    <span style="color: var(--text-secondary); font-size: var(--text-sm); font-weight: 500;">Tahmin Bandı (%90 Güven Aralığı):</span>
+                    <span id="prediction-band-text" class="prediction-band-range">305,40 ₺ — 324,80 ₺</span>
+                  </div>
+
+                  <div class="prediction-band-limits">
+                    <div class="prediction-band-limit-item">
+                      <span class="prediction-band-limit-label">Alt Bant Sınırı (%90):</span>
+                      <span id="prediction-band-min" class="prediction-band-limit-value">305,40 ₺</span>
+                    </div>
+                    <div class="prediction-band-limit-item" style="text-align: right;">
+                      <span class="prediction-band-limit-label">Üst Bant Sınırı (%90):</span>
+                      <span id="prediction-band-max" class="prediction-band-limit-value">324,80 ₺</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Uncertainty Meter & Score -->
+                <div class="uncertainty-meter">
+                  <div class="uncertainty-meter-header">
+                    <span style="color: var(--text-secondary); font-weight: 500;">Model Belirsizlik Skoru:</span>
+                    <span id="prediction-uncertainty-score" class="badge badge-warning">± %2,8 Belirsizlik</span>
+                  </div>
+                  <div class="uncertainty-bar-track" aria-hidden="true">
+                    <div id="prediction-uncertainty-bar" class="uncertainty-bar-fill" style="width: 28%;" role="progressbar" aria-valuenow="28" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+
+                <!-- Model Specifications & Baseline Comparison -->
+                <div class="model-meta-grid">
+                  <div class="model-meta-item">
+                    <span class="model-meta-label">Model Sürümü</span>
+                    <span id="prediction-meta-version" class="model-meta-value">v1.4.2-ens</span>
+                  </div>
+                  <div class="model-meta-item">
+                    <span class="model-meta-label">Ufuk</span>
+                    <span id="prediction-meta-horizon" class="model-meta-value">5 Gün (120s)</span>
+                  </div>
+                  <div class="model-meta-item">
+                    <span class="model-meta-label">Mimari</span>
+                    <span class="model-meta-value">LSTM + LGBM</span>
+                  </div>
+                  <div class="model-meta-item">
+                    <span class="model-meta-label">Baseline Kıyası</span>
+                    <span id="prediction-meta-baseline" class="model-meta-value" style="color: var(--color-success);">+%8,4 İsabet (Baseline Üstü)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Fallback State: Model Below Baseline or Feature Flag Disabled -->
+              <div id="prediction-model-fallback" class="model-disabled-state active" role="alert" aria-live="polite">
+                <div style="font-size: var(--text-2xl);">⚠️</div>
+                <div style="font-weight: 600; color: var(--text-primary); font-size: var(--text-sm);">
+                  Tahmin Özelliği Şu Anda Kullanılamıyor
+                </div>
+                <div style="font-size: var(--text-xs); color: var(--text-muted); line-height: 1.5; max-width: 360px;">
+                  Model performansı naif kıyas (baseline) doğrulama aşamasındadır veya özellik bayrağı kapalıdır. Klasik teknik analiz göstergeleri kullanılabilir.
+                </div>
+              </div>
+
+              <!-- Toggle Button for Model Fallback Simulation (Testing & Admin) -->
+              <div style="display: flex; justify-content: flex-end; padding-top: var(--space-1);">
+                <button type="button" id="btn-toggle-model-status" class="btn btn-sm btn-ghost" style="font-size: 11px; color: var(--text-muted);" onclick="window.BoraApp.toggleModelStatus()">
+                  ⚙️ Model Durumunu Değiştir (Aktif/Kapalı)
+                </button>
+              </div>
+
+              <!-- Legal Disclaimer Box (DISCLAIMER_TR.md) -->
+              <div class="prediction-disclaimer-box" role="note">
+                <strong>ℹ️ Şeffaflık & Model Sorumluluk Reddi:</strong>
+                <p id="prediction-disclaimer-text" style="margin-top: var(--space-1); margin-bottom: 0;">
+                  Deneysel model çıktısı (v1.4.2, 5 iş günü). Kesin sonuç veya hedef fiyat vaadi teşkil etmez; kişiye özel yatırım danışmanlığı veya al-sat tavsiyesi içermez. Belirsizlik aralığıyla birlikte değerlendirin. Model, basit bir kıyas yöntemine (naive baseline) göre test edilmiştir.
+                </p>
+              </div>
+            </div>
+
+            <!-- Technical Indicators Breakdown -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">📊 Teknik Gösterge Özeti</h2>
+                <span class="badge badge-bull" aria-label="Eğilim: Yükseliş"><span aria-hidden="true">▲</span> Genel: Yükseliş Eğilimi</span>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+                  <span>RSI (14 Periyot)</span>
+                  <div><strong>62,40</strong> <span class="badge badge-bull" aria-label="RSI Pozitif"><span aria-hidden="true">▲</span> Pozitif</span></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+                  <span>MACD Sinyal Hattı (12, 26, 9)</span>
+                  <div><strong>+1,84</strong> <span class="badge badge-bull" aria-label="MACD Alış Kesişimi"><span aria-hidden="true">▲</span> Alış Kesişimi</span></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0; border-bottom: 1px solid var(--border-subtle);">
+                  <span>Bollinger Bant Konumu</span>
+                  <div><strong>Üst Banda Yakın</strong> <span class="badge badge-neutral" aria-label="Bollinger Nötr"><span aria-hidden="true">▬</span> Nötr</span></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: var(--space-2) 0;">
+                  <span>Hacim Ağırlıklı Ort. (VWAP)</span>
+                  <div><strong>310,20 ₺</strong> <span class="badge badge-bull" aria-label="VWAP Fiyat Üzerinde"><span aria-hidden="true">▲</span> Fiyat Üzerinde</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 5: UYARILAR (ALERTS) -->
+        <section id="screen-alerts" class="app-screen" aria-labelledby="heading-alerts">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-alerts" class="card-title" style="font-size: var(--text-2xl);">Fiyat & Teknik Gösterge Uyarıları</h1>
+              <p class="card-subtitle">Koşul bazlı bildirim kuralları (E-posta, SMS, Anlık Bildirim)</p>
+            </div>
+          </div>
+
+          <div class="grid-cols-2">
+            <!-- Alert Creation Form -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">➕ Yeni Uyarı Oluştur</h2>
+              </div>
+              <form onsubmit="window.BoraApp.addAlert(event)">
+                <div class="form-group" style="margin-bottom: var(--space-3);">
+                  <label for="alert-symbol" class="form-label">Hisse Sembolü</label>
+                  <input type="text" id="alert-symbol" class="form-input" value="THYAO" required />
+                </div>
+                <div class="form-group" style="margin-bottom: var(--space-3);">
+                  <label for="alert-condition" class="form-label">Koşul Tanımı</label>
+                  <input type="text" id="alert-condition" class="form-input" placeholder="Örn: Fiyat >= 325.00 TRY veya RSI > 70" required />
+                </div>
+                <div class="form-group" style="margin-bottom: var(--space-4);">
+                  <label for="alert-channel" class="form-label">Bildirim Kanalı</label>
+                  <select id="alert-channel" class="form-select">
+                    <option value="E-posta">E-posta</option>
+                    <option value="Bildirim">Web Push Bildirimi</option>
+                    <option value="SMS">SMS</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Uyarıyı Kaydet</button>
+              </form>
+            </div>
+
+            <!-- Existing Alerts List -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">📋 Kayıtlı Uyarılarım</h2>
+              </div>
+              <div id="alerts-list-container" style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <!-- Dynamic alerts -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 6: IZLEME LISTELERI (WATCHLISTS) -->
+        <section id="screen-watchlists" class="app-screen" aria-labelledby="heading-watchlists">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-watchlists" class="card-title" style="font-size: var(--text-2xl);">Özel İzleme Listeleri</h1>
+              <p class="card-subtitle">Takip ettiğiniz hisseleri gruplayın ve portföy hareketlerini izleyin</p>
+            </div>
+            <div style="display: flex; gap: var(--space-2); flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm" onclick="window.BoraApp.clearAllWatchlist()">Tümünü Temizle (Boş Durum Testi)</button>
+              <button class="btn btn-primary btn-sm" onclick="window.BoraApp.resetSampleWatchlist()">+ Yeni Liste / Yenile</button>
+            </div>
+          </div>
+
+          <div class="tab-bar">
+            <button class="tab-btn active">BIST 30 Favorilerim (<span id="watchlist-count">3</span>)</button>
+            <button class="tab-btn" onclick="window.BoraApp.showToast('Temettü Şirketleri listesi seçildi')">Temettü Şirketleri (4)</button>
+            <button class="tab-btn" onclick="window.BoraApp.showToast('Yüksek İvmeliler listesi seçildi')">Yüksek İvmeliler (3)</button>
+          </div>
+
+          <div class="card" style="margin-top: var(--space-4);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+              <div class="table-scroll-hint"><span aria-hidden="true">💡</span> Telefon ekranında kart veya kaydırılabilir tablo modunu kullanabilirsiniz.</div>
+              <button id="btn-toggle-table-view-watchlist" class="btn-table-view-toggle" onclick="window.BoraApp.toggleMobileTableView()" aria-label="Mobil tablo görünümünü değiştir (Kartlar veya Yatay Kaydırma)" title="Mobil Görünüm Modu">
+                <span id="btn-toggle-table-view-icon-watchlist" aria-hidden="true">📱</span>
+                <span id="btn-toggle-table-view-text-watchlist">Kart Görünümü Aktif</span>
+              </button>
+            </div>
+            <div id="watchlist-table-container" class="table-responsive table-cards-mobile">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Sembol</th>
+                    <th scope="col">Şirket</th>
+                    <th scope="col">Son Fiyat</th>
+                    <th scope="col">Fark %</th>
+                    <th scope="col">24s Hacim</th>
+                    <th scope="col">İşlem</th>
+                  </tr>
+                </thead>
+                <tbody id="watchlist-table-body">
+                  <!-- Dynamically rendered by app.js -->
+                </tbody>
+              </table>
+            </div>
+            <div id="watchlist-empty-state-wrap" style="display: none;">
+              <!-- Dynamic empty state injected when list is empty -->
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 7: AYARLAR (SETTINGS) -->
+        <section id="screen-settings" class="app-screen" aria-labelledby="heading-settings">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-settings" class="card-title" style="font-size: var(--text-2xl);">Hesap & Uygulama Ayarları</h1>
+              <p class="card-subtitle">Güvenlik, kimlik doğrulama, bölgesel tercihler ve gizlilik</p>
+            </div>
+          </div>
+
+          <div class="grid-cols-2">
+            <div class="card">
+              <h2 class="card-title">🔐 Güvenlik ve Giriş</h2>
+              <div style="display: flex; flex-direction: column; gap: var(--space-3);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div>
+                    <strong>Passkey (WebAuthn / FIDO2)</strong>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted);">Biyometrik veya USB anahtar ile şifresiz giriş</div>
+                  </div>
+                  <button class="btn btn-secondary btn-sm" onclick="window.BoraApp.showToast('Passkey kayıt sihirbazı başlatıldı')">Anahtar Ekle</button>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: var(--space-3);">
+                  <div>
+                    <strong>İki Aşamalı Doğrulama (TOTP 2FA)</strong>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted);">Google Authenticator / 1Password</div>
+                  </div>
+                  <span class="badge badge-bull">Etkin</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: var(--space-3);">
+                  <div>
+                    <strong>Aktif Oturumlar</strong>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted);">1 aktif web oturumu (Windows / Chrome)</div>
+                  </div>
+                  <button class="btn btn-ghost btn-sm" onclick="window.BoraApp.showToast('Tüm diğer oturumlar sonlandırıldı')">Diğerlerini Kapat</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h2 class="card-title">🌍 Bölgesel & Görünüm Tercihleri</h2>
+              <div class="form-group">
+                <label for="setting-timezone" class="form-label">Saat Dilimi</label>
+                <select id="setting-timezone" class="form-select">
+                  <option value="Europe/Istanbul" selected>Europe/Istanbul (UTC+3)</option>
+                  <option value="UTC">UTC</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="setting-currency" class="form-label">Varsayılan Para Birimi</label>
+                <select id="setting-currency" class="form-select">
+                  <option value="TRY" selected>Türk Lirası (₺ - TRY)</option>
+                  <option value="USD">Amerikan Doları ($ - USD)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="setting-refresh" class="form-label">Piyasa Verisi Yenileme Sıklığı</label>
+                <select id="setting-refresh" class="form-select">
+                  <option value="realtime" selected>Anlık WebSocket (Varsayılan)</option>
+                  <option value="15s">15 Saniyede Bir</option>
+                  <option value="60s">1 Dakikada Bir</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="setting-contrast" class="form-label">Görsel Kontrast & Erişilebilirlik (WCAG AAA)</label>
+                <select id="setting-contrast" class="form-select" onchange="window.BoraApp.setContrastMode(this.value === 'high')">
+                  <option value="normal" selected>Standart Kontrast (WCAG 2.1 AA)</option>
+                  <option value="high">Yüksek Kontrast (WCAG AAA - Ultra Belirgin)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 8: YASAL & SEFFAFLIK (LEGAL & TRANSPARENCY) -->
+        <section id="screen-legal" class="app-screen" aria-labelledby="heading-legal">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-legal" class="card-title" style="font-size: var(--text-2xl);">Yasal Beyanlar & Şeffaflık Kartı</h1>
+              <p class="card-subtitle">Veri lisansı, SPK mevzuatı, model sınırlamaları ve gizlilik politikası</p>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2 class="card-title">📜 SPK Uyarısı & Feragatname</h2>
+            <div style="font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; display: flex; flex-direction: column; gap: var(--space-3);">
+              <p>
+                <strong>Yatırım Tavsiyesi Değildir:</strong> Bu sitede yer alan veriler, analizler, teknik göstergeler ve yapay zeka model tahminleri,
+                yalnızca kullanıcıyı bilgilendirme amacıyla sunulmaktadır. Sermaye Piyasası Kurulu’nun (SPK) Yatırım Hizmetleri ve Faaliyetleri ile Yan Hizmetlere İlişkin
+                Esaslar Tebliği kapsamında kişiye özel yatırım danışmanlığı faaliyeti niteliğinde değildir.
+              </p>
+              <p>
+                <strong>Otomatik Al/Sat Emri Yoktur:</strong> Sistem hiçbir şart altında kullanıcı adına otomatik emir iletmez, portföy yönetimi yapmaz veya finansal kazanç taahhüdünde bulunmaz.
+              </p>
+              <p>
+                <strong>Veri Sağlayıcı Lisansı:</strong> BIST verileri lisanslı veri dağıtıcısı üzerinden temin edilmektedir. Kullanıcı ekranında aksi belirtilmedikçe gecikme süreleri veri sağlayıcı sözleşmesine tabidir.
+              </p>
+              <p>
+                <strong>Model Sınırlamaları:</strong> Yapay zeka ve istatistiki modeller geçmiş veriler üzerinde eğitilmiştir. Beklenmedik makroekonomik krizler, jeopolitik olaylar veya şirket özel durum açıklamaları tahmin aralığını geçersiz kılabilir.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SCREEN 9: YONETIM PANELI (ADMIN PORTAL) -->
+        <section id="screen-admin" class="app-screen" aria-labelledby="heading-admin">
+          <div class="card-header">
+            <div>
+              <h1 id="heading-admin" class="card-title" style="font-size: var(--text-2xl);">Sistem Yönetim Paneli (Yetkili)</h1>
+              <p class="card-subtitle">Veri sağlığı, iş kuyrukları, model versiyonları ve güvenlik günlükleri</p>
+            </div>
+            <span class="badge badge-info">Rol: RBAC Admin</span>
+          </div>
+
+          <div class="grid-cols-4">
+            <div class="ticker-card">
+              <span class="ticker-name">Veri Hattı Sağlığı</span>
+              <span class="ticker-value" style="color: var(--color-bull);">%100 Sağlıklı</span>
+              <span class="ticker-change" style="color: var(--color-bull);">0 Hata</span>
+            </div>
+            <div class="ticker-card">
+              <span class="ticker-name">İş Kuyruğu (Worker)</span>
+              <span class="ticker-value">2 Aktif İş</span>
+              <span class="ticker-change" style="color: var(--text-muted);">Gecikme &lt; 12ms</span>
+            </div>
+            <div class="ticker-card">
+              <span class="ticker-name">Aktif Model Sürümü</span>
+              <span class="ticker-value">v1.4.2-bist</span>
+              <span class="ticker-change" style="color: var(--color-info);">PyTorch GPU</span>
+            </div>
+            <div class="ticker-card">
+              <span class="ticker-name">Güvenlik Denetimi</span>
+              <span class="ticker-value" style="color: var(--color-bull);">Temiz</span>
+              <span class="ticker-change" style="color: var(--text-muted);">En Son: 10 dk önce</span>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top: var(--space-4);">
+            <div class="card-header">
+              <h2 class="card-title">🛡️ Son Sistem Güvenlik & Denetim Olayları</h2>
+              <span style="font-size: var(--text-xs); color: var(--text-muted);">*Parolalar, sırlar ve tokenlar kayıt altına alınmaz.</span>
+            </div>
+            <div class="table-scroll-hint"><span aria-hidden="true">↔️</span> Geniş denetim tablosunu yatay kaydırabilir veya kart modunda inceleyebilirsiniz.</div>
+            <div class="table-responsive table-cards-mobile">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Olay ID</th>
+                    <th scope="col">Zaman (UTC+3)</th>
+                    <th scope="col">Olay Türü</th>
+                    <th scope="col">Hedef Kaynak</th>
+                    <th scope="col">Durum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td data-label="Olay ID"><code>EVT-9041</code></td>
+                    <td data-label="Zaman (UTC+3)">23.10.2026 16:30:12</td>
+                    <td data-label="Olay Türü">Admin Oturumu (MFA Doğrulandı)</td>
+                    <td data-label="Hedef Kaynak">/api/v1/admin/health</td>
+                    <td data-label="Durum"><span class="badge badge-bull">Başarılı</span></td>
+                  </tr>
+                  <tr>
+                    <td data-label="Olay ID"><code>EVT-9040</code></td>
+                    <td data-label="Zaman (UTC+3)">23.10.2026 16:15:00</td>
+                    <td data-label="Olay Türü">Model Baseline Doğrulama</td>
+                    <td data-label="Hedef Kaynak">PyTorch Runner v1.4</td>
+                    <td data-label="Durum"><span class="badge badge-bull">Geçti</span></td>
+                  </tr>
+                  <tr>
+                    <td data-label="Olay ID"><code>EVT-9039</code></td>
+                    <td data-label="Zaman (UTC+3)">23.10.2026 15:45:22</td>
+                    <td data-label="Olay Türü">Hız Limiti Aşıldı (Rate-Limit)</td>
+                    <td data-label="Hedef Kaynak">/api/v1/market/prices</td>
+                    <td data-label="Durum"><span class="badge badge-warning">Engellendi (429)</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- App Footer -->
+      <footer class="app-footer">
+        <p>Borsa Analiz Sistemi © 2026. Bilgilendirme ve Teknik Analiz Platformudur.</p>
+        <p style="margin-top: 4px;">T.C. Sermaye Piyasası Kanunu uyarınca yatırım tavsiyesi verilmez. Veriler Borsa İstanbul lisans koşullarına tabidir.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar (< 1024px) -->
+  <nav class="mobile-bottom-nav" aria-label="Mobil Hızlı Menü">
+    <button class="mobile-nav-item active" data-screen="dashboard">
+      <span style="font-size: 18px;">📊</span>
+      <span>Pano</span>
+    </button>
+    <button class="mobile-nav-item" data-screen="screener">
+      <span style="font-size: 18px;">🔍</span>
+      <span>Keşfet</span>
+    </button>
+    <button class="mobile-nav-item" data-screen="detail">
+      <span style="font-size: 18px;">📈</span>
+      <span>Grafik</span>
+    </button>
+    <button class="mobile-nav-item" data-screen="alerts">
+      <span style="font-size: 18px;">🔔</span>
+      <span>Uyarılar</span>
+    </button>
+    <button class="mobile-nav-item" onclick="window.BoraApp.navigateTo('settings')">
+      <span style="font-size: 18px;">⚙️</span>
+      <span>Ayarlar</span>
+    </button>
+  </nav>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

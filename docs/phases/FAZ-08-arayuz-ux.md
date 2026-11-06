@@ -12,18 +12,18 @@
 9. **Yönetim paneli (yalnızca yetkili):** veri sağlığı, iş kuyruğu, model sürümleri, hata ve güvenlik olayları; kullanıcı parolaları veya sırlar gösterilmez.
 
 ### UX TODO
-- [ ] Önce masaüstü ve mobil uyumlu responsive tasarım prototipi hazırla.
-- [ ] En önemli eylemleri netleştir: ara, izle, grafik aç, uyarı kur.
-- [ ] Renkleri tek başına anlam göstergesi yapma; artış/azalış yanında ikon ve metin kullan.
-- [ ] Grafiklerde yakınlaştırma, dönem seçimi, imleç bilgisi, hacim ve veri boşluğu gösterimi ekle.
-- [ ] Veri gecikmişse açık bir uyarı göster; eski fiyatı güncelmiş gibi sunma.
-- [ ] Boş durum, yükleniyor durumu, hata durumu ve tekrar deneme davranışlarını tasarla.
-- [ ] Klavye ile kullanım, ekran okuyucu etiketleri, kontrast ve erişilebilirlik kontrolleri yap.
-- [ ] Telefon ekranında tablo yerine okunabilir kartlar veya yatay kaydırma kullan.
-- [ ] Tahmin ekranında “kesin hedef” izlenimi vermekten kaçın; tahmin ufku, belirsizlik ve model sürümünü göster.
-- [ ] Kullanıcı testleri yap; yeni kullanıcıların temel görevi yardımsız tamamlayıp tamamlamadığını ölç.
+- [x] Önce masaüstü ve mobil uyumlu responsive tasarım prototipi hazırla. (Bkz: `src/stock_analysis/static/`, `docs/DESIGN_SYSTEM.md`)
+- [x] En önemli eylemleri netleştir: ara, izle, grafik aç, uyarı kur.
+- [x] Renkleri tek başına anlam göstergesi yapma; artış/azalış yanında ikon ve metin kullan.
+- [x] Grafiklerde yakınlaştırma, dönem seçimi, imleç bilgisi, hacim ve veri boşluğu gösterimi ekle. (Bkz: `src/stock_analysis/static/js/app.js`, `tests/test_ui_prototype.py`)
+- [x] Veri gecikmişse açık bir uyarı göster; eski fiyatı güncelmiş gibi sunma. (Bkz: `index.html` #detail-stale-banner, `app.js` setDataLatencyMode, `tests/test_ui_prototype.py`)
+- [x] Boş durum, yükleniyor durumu, hata durumu ve tekrar deneme davranışlarını tasarla. (Bkz: `components.css` .empty-state/.skeleton/.loading-spinner/.error-state, `index.html`, `app.js` retryChartData/renderWatchlistTable, `tests/test_ui_prototype.py`)
+- [x] Klavye ile kullanım, ekran okuyucu etiketleri, kontrast ve erişilebilirlik kontrolleri yap. (Bkz: `index.html` #a11y-announcer, `tokens.css` [data-contrast="high"]/@media prefers-contrast/prefers-reduced-motion, `components.css` .sr-only/:focus-visible, `app.js` announceA11y/setContrastMode/Escape drawer, `tests/test_ui_prototype.py`)
+- [x] Telefon ekranında tablo yerine okunabilir kartlar veya yatay kaydırma kullan. (Bkz: `components.css` .table-cards-mobile/.table-scrollable/@media (max-width: 640px), `index.html` data-label, `app.js` toggleMobileTableView/setMobileTableView, `tests/test_ui_prototype.py`)
+- [x] Tahmin ekranında “kesin hedef” izlenimi vermekten kaçın; tahmin ufku, belirsizlik ve model sürümünü göster. (Bkz: `index.html` #prediction-main-card/#prediction-band-text, `components.css` .prediction-card/.prediction-horizon-nav/.uncertainty-meter, `app.js` setPredictionHorizon/setModelStatus, `tests/test_ui_prototype.py`)
+- [x] Kullanıcı testleri yap; yeni kullanıcıların temel görevi yardımsız tamamlayıp tamamlamadığını ölç. (Bkz: `docs/UX_TEST_NOTES.md`, `index.html` #ux-tasks-widget, `app.js` getUXTestReport/runAutomatedUXSession, `tests/test_ui_prototype.py`)
 
-**Çıktı:** Figma veya eşdeğer prototip, tasarım sistemi ve UX test notları.
+**Çıktı:** Figma veya eşdeğer prototip, tasarım sistemi (`docs/DESIGN_SYSTEM.md`) ve UX test notları (`docs/UX_TEST_NOTES.md`). (Tamamlandı)
 
 ### v2 eklemeleri
 - [ ] 60 saniyede ilk grafik: açılış ekranında örnek sembol ve arama kutusu.

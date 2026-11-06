@@ -59,15 +59,15 @@ stock-analysis/
 └── TODO.md
 ```
 
-- [ ] Mimari diyagramı ve veri akışını çiz.
-- [ ] API sözleşmelerini (OpenAPI) belirle.
-- [ ] Kullanıcı verisi, piyasa verisi ve model çıktıları için ayrı erişim sınırları kur.
-- [ ] Servisler arasında zaman damgası, saat dilimi, para birimi, sembol ve veri kaynağı standardını belirle.
-- [ ] “Düzeltilmiş fiyat” ve “ham fiyat” ayrımını veri modelinde açıkça tanımla.
+- [x] Mimari diyagramı ve veri akışını çiz.
+- [x] API sözleşmelerini (OpenAPI) belirle.
+- [x] Kullanıcı verisi, piyasa verisi ve model çıktıları için ayrı erişim sınırları kur.
+- [x] Servisler arasında zaman damgası, saat dilimi, para birimi, sembol ve veri kaynağı standardını belirle.
+- [x] “Düzeltilmiş fiyat” ve “ham fiyat” ayrımını veri modelinde açıkça tanımla.
 
-**Çıktı:** `docs/ARCHITECTURE.md`, API taslağı ve veri sözlüğü.
+**Çıktı:** `docs/ARCHITECTURE.md`, API taslağı (`docs/API_DRAFT.md`) ve veri sözlüğü (`docs/DATA_DICTIONARY.md`).
 
 ### v2 eklemeleri
-- [ ] Önbellek ve toplu hesap katmanını mimari diyagrama ekle (`docs/ARCHITECTURE.md` v2 bölümü).
-- [ ] Özellik bayrakları (`FORECAST_ENABLED`, `LLM_ENABLED`) ve kapalı durum davranışını tanımla.
-- [ ] Performans bütçelerini (`docs/PERFORMANCE.md`) tasarım kısıtı olarak kabul et.
+- [x] Önbellek ve toplu hesap katmanını mimari diyagrama ekle (`docs/ARCHITECTURE.md` v2 bölümü).
+- [x] Özellik bayrakları (`FORECAST_ENABLED`, `LLM_ENABLED`) ve kapalı durum davranışını tanımla.
+- [x] Performans bütçelerini (`docs/PERFORMANCE.md`) tasarım kısıtı olarak kabul et.
